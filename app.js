@@ -38,23 +38,43 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
   } else {
     // Next player
-    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
-    roundScore = 0;
-
-    document.getElementById("current-0").textContent = "0";
-    document.getElementById("current-1").textContent = "0";
-
-    document.querySelector(".player-0-panel").classList.toggle("active");
-    document.querySelector(".player-1-panel").classList.toggle("active");
-
-    document.querySelector(".dice").style.display = "none";
+    nextPlayer();
   }
 });
 
-// document.querySelector("#current-" + activePlayer).textContent = dice;
-//  document.querySelector("#current-" + activePlayer).innerHTML =
-//   "<em>" + dice + "</em>";
+document.querySelector(".btn-hold").addEventListener("click", function () {
+  // add the current score to the global score
+  scores[activePlayer] += roundScore;
 
-// var x = document.querySelector("#score-0").textContent;
+  // update the UI
+  document.getElementById("score-" + activePlayer).textContent =
+    scores[activePlayer];
 
-// console.log(x);
+  // check if player won the game
+  if (scores[activePlayer] >= 20) {
+    document.querySelector("#name-" + activePlayer).textContent = "Winner!";
+    document.querySelector(".dice").style.display = "none";
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.add("winner");
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.remove("active");
+  } else {
+    nextPlayer();
+  }
+});
+
+function nextPlayer() {
+  // Next Player
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+  roundScore = 0;
+
+  document.getElementById("current-0").textContent = "0";
+  document.getElementById("current-1").textContent = "0";
+
+  document.querySelector(".player-0-panel").classList.toggle("active");
+  document.querySelector(".player-1-panel").classList.toggle("active");
+
+  document.querySelector(".dice").style.display = "none";
+}
